@@ -1,0 +1,54 @@
+package Analizadores; 
+import java_cup.runtime.*; 
+ 
+parser code 
+{: 
+/**Metodo al que se llama automáticamente ante algún error sintactico.*/ 
+public void syntax_error(Symbol s){ 
+ System.out.println("Error en la Línea " + (s.right+1) +" Columna " +s.left+ ". Identificador " +s.value + " no reconocido." ); 
+} 
+ /**Metodo al que se llama en el momento en que ya no es posible una recuperación de errores.*/ 
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+ System.out.println("Error en la Línea " + (s.right+1)+ "Columna "+s.left+". Identificador " + s.value + " no reconocido."); 
+} 
+:} 
+
+terminal abrir_estructura, cerrar_estructura, abrir_directorio, cerrar_directorio, abrir_carpeta, cerrar_carpeta, abrir_nombre, cerrar_nombre, 
+abrir_documento, cerrar_documento, abrir_formato, cerrar_formato, abrir_contenido, cerrar_contenido, directorio, nombre_carpeta, nombre_documento, 
+formato_documento, contenido; 
+
+non terminal INICIO, ESTRUCTURA, DIRECTORIO', DIRECTORIO, CARPETA', CARPETA, DATOS_CARPETA, CONTENIDO', CONTENIDO, DOCUMENTO,
+INTERIOR, NOMBRE_DOCUMENTO, TIPO_DOCUMENTO;
+  
+start with INICIO;  
+
+INICIO ::= ESTRUCTURA {: System.out.println("DATOS CORRECTOS"); :} 
+
+ESTRUCTURA ::= abrir_estructura DIRECTORIO' cerrar_estructura;
+
+DIRECTORIO'::=  DIRECTORIO' DIRECTORIO
+				|DIRECTORIO;
+				
+DIRECTORIO ::= abrir_directorio CARPETA' cerrar_directorio;
+
+CARPETA' ::= CARPETA' CARPETA
+			|CARPETA;
+
+CARPETA ::= abrir_carpeta DATOS_CARPETA cerrar_carpeta; 
+
+DATOS_CARPETA ::= abrir_nombre nombre_carpeta cerrar_carpeta CONTENIDO';
+
+CONTENIDO' ::= CONTENIDO' CONTENIDO
+				|CONTENIDO;
+
+CONTENIDO ::= abrir_documento DOCUMENTO cerrar_documento;
+
+DOCUMENTO ::= 	DOCUMENTO INTERIOR		
+				|NOMBRE_DOCUMENTO TIPO_DOCUMENTO;
+				
+NOMBRE_DOCUMENTO ::= nombre_documento;
+
+TIPO_DOCUMENTO ::= formato_documento;
+
+INTERIOR ::= contenido;
+				
