@@ -13,42 +13,43 @@ public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
 } 
 :} 
 
-terminal abrir_estructura, cerrar_estructura, abrir_directorio, cerrar_directorio, abrir_carpeta, cerrar_carpeta, abrir_nombre, cerrar_nombre, 
-abrir_documento, cerrar_documento, abrir_formato, cerrar_formato, abrir_contenido, cerrar_contenido, directorio, nombre_carpeta, nombre_documento, 
-formato_documento, contenido; 
+terminal abrir, cerrar, fin, r_estructura, r_directorio, r_carpeta, r_nombre, r_documento, r_formato, r_contenido, 
+ directorio, nombre_archivo, contenido; 
 
-non terminal INICIO, ESTRUCTURA, DIRECTORIO', DIRECTORIO, CARPETA', CARPETA, DATOS_CARPETA, CONTENIDO', CONTENIDO, DOCUMENTO,
-INTERIOR, NOMBRE_DOCUMENTO, TIPO_DOCUMENTO;
+non terminal INICIO, ESTRUCTURA, DIRECTORIO, CARPETA, NOMBRE_CARPETA, CONTENIDO_CARPETA, DOCUMENTO, 
+CONTENIDO_DOCUMENTO, NOMBRE_DOCUMENTO, TIPO_DOCUMENTO, INTERIOR, FIN_DOCUMENTO;
   
 start with INICIO;  
 
-INICIO ::= ESTRUCTURA {: System.out.println("DATOS CORRECTOS"); :} 
+INICIO ::= ESTRUCTURA {: System.out.println("DATOS CORRECTOS"); :};
 
-ESTRUCTURA ::= abrir_estructura DIRECTORIO' cerrar_estructura;
-
-DIRECTORIO'::=  DIRECTORIO' DIRECTORIO
-				|DIRECTORIO;
+ESTRUCTURA ::= abrir r_estructura cerrar DIRECTORIO  abrir fin r_estructura cerrar;
 				
-DIRECTORIO ::= abrir_directorio CARPETA' cerrar_directorio;
+DIRECTORIO ::= abrir r_directorio cerrar directorio abrir fin r_directorio cerrar CARPETA;
 
-CARPETA' ::= CARPETA' CARPETA
-			|CARPETA;
+CARPETA ::= abrir r_carpeta cerrar NOMBRE_CARPETA abrir fin r_carpeta cerrar;
 
-CARPETA ::= abrir_carpeta DATOS_CARPETA cerrar_carpeta; 
-
-DATOS_CARPETA ::= abrir_nombre nombre_carpeta cerrar_carpeta CONTENIDO';
-
-CONTENIDO' ::= CONTENIDO' CONTENIDO
-				|CONTENIDO;
-
-CONTENIDO ::= abrir_documento DOCUMENTO cerrar_documento;
-
-DOCUMENTO ::= 	DOCUMENTO INTERIOR		
-				|NOMBRE_DOCUMENTO TIPO_DOCUMENTO;
+NOMBRE_CARPETA ::= abrir r_nombre cerrar nombre_archivo abrir fin r_nombre cerrar CONTENIDO_CARPETA;
+					 			
+CONTENIDO_CARPETA ::= CARPETA
+					 |DOCUMENTO;			
+								
+DOCUMENTO ::=  abrir r_documento cerrar CONTENIDO_DOCUMENTO;
+			   
+CONTENIDO_DOCUMENTO ::= NOMBRE_DOCUMENTO TIPO_DOCUMENTO FIN_DOCUMENTO;
 				
-NOMBRE_DOCUMENTO ::= nombre_documento;
+NOMBRE_DOCUMENTO ::= abrir r_nombre cerrar nombre_archivo abrir fin r_nombre cerrar;
 
-TIPO_DOCUMENTO ::= formato_documento;
+TIPO_DOCUMENTO ::= abrir r_formato cerrar nombre_archivo abrir fin r_formato cerrar;
 
-INTERIOR ::= contenido;
+INTERIOR ::= abrir r_contenido cerrar contenido abrir fin r_contenido cerrar abrir fin r_documento cerrar;
+
+FIN_DOCUMENTO ::= INTERIOR
+				  |abrir fin r_documento cerrar DOCUMENTO;	
+				   
+
+
+
+
+
 				

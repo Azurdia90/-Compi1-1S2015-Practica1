@@ -1,0 +1,11 @@
+<estructura> 
+	<directorio> C:\Users\Desktop </directorio> 
+		<carpeta> 
+			<nombre> Nueva </nombre> 
+			<documento> 
+				<nombre> prueba </nombre> 
+				<formato> txt </formato> 
+				<contenido> "mala onda" </contenido> 
+			</documento> 
+		</carpeta> 
+</estructura>

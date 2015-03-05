@@ -1,8 +1,12 @@
 package GUI;
 
+import Analizadores.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -47,7 +51,7 @@ public class JFprincipal extends javax.swing.JFrame {
         jMIabrir = new javax.swing.JMenuItem();
         jMInuevo = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        jManalizar = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,8 +83,22 @@ public class JFprincipal extends javax.swing.JFrame {
 
         jMBanalizador.add(jMenu2);
 
-        jMenu3.setText("Analizar");
-        jMBanalizador.add(jMenu3);
+        jManalizar.setText("Analizar");
+        jManalizar.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jManalizarMenuSelected(evt);
+            }
+        });
+        jManalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jManalizarActionPerformed(evt);
+            }
+        });
+        jMBanalizador.add(jManalizar);
 
         jMenu5.setText("Errores");
         jMBanalizador.add(jMenu5);
@@ -125,13 +143,28 @@ public class JFprincipal extends javax.swing.JFrame {
         jTAarchivo.setText("");
     }//GEN-LAST:event_jMInuevoActionPerformed
 
+    private void jManalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jManalizarActionPerformed
+        
+
+    }//GEN-LAST:event_jManalizarActionPerformed
+
+    private void jManalizarMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jManalizarMenuSelected
+        System.out.println("--------------INICIO DE COMPILACIÓN-----------------"); 
+        try { 
+            new sintactico(new lexico( new StringReader(jTAarchivo.getText()))).parse();
+        } catch (Exception ex) { 
+            Logger.getLogger(JFprincipal.class.getName()).log(Level.SEVERE, null, ex); 
+        }//fin catch 
+        System.out.println("----------------FIN DE COMPILACIÓN-----------------");
+    }//GEN-LAST:event_jManalizarMenuSelected
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMBanalizador;
     private javax.swing.JMenuItem jMIabrir;
     private javax.swing.JMenuItem jMInuevo;
+    private javax.swing.JMenu jManalizar;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
